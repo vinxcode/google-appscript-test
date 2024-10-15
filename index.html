@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reseñas</title>
+</head>
+<body>
+    <h1>Reseñas</h1>
+    <div id="resenas"></div>
+    <script>
+        fetch('https://script.google.com/macros/s/AKfycbzTkO5VeaSI4TTozCV1Z3n_C3k-64_S13sB6d4hG5Iuz6fC9E-NUYbYnAocKRKrVB8K/exec')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                const resenasDiv = document.getElementById('resenas');
+                if (data.length === 0) {
+                    resenasDiv.innerHTML = '<p>No hay reseñas disponibles.</p>';
+                } else {
+                    data.forEach(resena => {
+                        const div = document.createElement('div');
+                        div.innerHTML = `<strong>${resena.nombre}</strong>: ${resena.comentario} (${resena.calificacion})`;
+                        resenasDiv.appendChild(div);
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('resenas').innerHTML = '<p>Error al cargar las reseñas.</p>';
+            });
+    </script>
+</body>
+</html>
